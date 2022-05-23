@@ -1,0 +1,44 @@
+#	scrabble-Buchstaben
+#
+#	Wolfgang Lauffher
+#
+#	Thu Feb  9 20:51:43 GMT 1995
+
+#!/bin/sh
+
+SPALTEN=6		# Anzahl der gewuenschten Spalten
+MUSTER=xxxxxx		# Anzahl der Zeichen = $SPALTEN !
+
+kolonnen_bilden()
+{	ANZ= 
+	while read line
+	do	ANZ=x$ANZ
+		if [ $ANZ = $MUSTER ]
+		then	echo "$line \\\\"
+			ANZ=
+		else	echo -n "$line &"
+		fi
+	done
+}
+
+
+#### hier geht's los! ####
+
+echo "\documentstyle[a4,12pt,german]{article}"
+echo "\parindent=0em"
+echo "\parskip=1.5ex"
+echo "\pagestyle{empty}"
+echo "\begin{document}"
+
+
+for i in $*
+do
+	GROSS=`echo $i | tr 'a-z' 'A-Z'`
+	echo "\subsection*{$GROSS}"
+	echo "\begin{tabular}{*{$SPALTEN}{l}}"
+	cat $i | kolonnen_bilden
+	echo "\end{tabular}"
+done
+
+echo "\end{document}"
+
