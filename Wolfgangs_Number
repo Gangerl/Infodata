@@ -1,0 +1,22 @@
+Todo: Find a special date where Unix Time is the same as the date (ISO-Code style, only numbers up to the hour - 10 digits)
+
+Result: 2034061611 (I call it "Wolfgang's number" ;-)  The 16th of June 2034 at 11 o'clock. Let's celebrate it!
+
+Cool! The number seems to be unknown up to now. Google shows nothing for it.
+
+My script to find it:
+
+#!/bin/bash
+UNIXTIME=2034000000
+
+while [ $UNIXTIME -lt 2100000000 ]; do
+	DATE=$(date +"%Y%m%d%H" -d @$UNIXTIME)
+	echo "Unixtime: $UNIXTIME  Date: $DATE"
+	if [ $UNIXTIME = $DATE ]; then
+		echo "Found special date to unix time:"
+		echo "Unixtime: $UNIXTIME"
+		echo "Date: $DATE = $(date +"%Y-%m-%dT%H" -d @$UNIXTIME)"
+		break
+	fi
+	UNIXTIME=$(($UNIXTIME+1))
+done
